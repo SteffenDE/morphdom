@@ -1,7 +1,11 @@
-var chai = require('chai');
-var expect = chai.expect;
-var morphdom = require('../../');
-var resultTemplate = require('./test-result.marko');
+function registerMorphdomTests(options) {
+    var morphdom = options.morphdom;
+    var expect = options.expect;
+    var describe = options.describe;
+    var it = options.it;
+    var xit = options.xit || function() {};
+    var beforeEach = options.beforeEach || function() {};
+    var autoTests = options.autoTests;
 
 function parseHtml(html) {
     var tmp = document.createElement('body');
@@ -238,16 +242,6 @@ function runTest(name, autoTest, virtual) {
 
 
 
-    var containerEl = document.createElement('div');
-    resultTemplate.renderSync({
-            name: name,
-            fromHtml: fromHtml,
-            expectedHtml: toHtml,
-            actualHtml: outerHTML(morphedNode)
-        })
-        .appendTo(containerEl);
-
-    document.getElementById('test-results').appendChild(containerEl);
     // console.log('elLookupBefore: ', elLookupBefore);
 
     var morphedNodeSerialized = serializeNode(morphedNode);
@@ -329,14 +323,15 @@ function node(tag, attrs, body) {
 }
 
 describe('morphdom' , function() {
-    this.timeout(0);
+    if (this && this.timeout) {
+        this.timeout(0);
+    }
 
     beforeEach(function() {
+        document.body.innerHTML = '';
     });
 
     describe('auto tests', function() {
-        var autoTests = require('../mocha-headless/generated/auto-tests');
-
         Object.keys(autoTests).forEach(function(name) {
             var test = autoTests[name];
             var itFunc = test.only ? it.only : it;
@@ -1693,3 +1688,9 @@ describe('morphdom' , function() {
          expect(div1).to.equal(div1_2);
      });
 });
+
+}
+
+module.exports = {
+    registerMorphdomTests: registerMorphdomTests
+};

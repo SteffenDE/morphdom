@@ -7,9 +7,8 @@
 *.orig
 .DS_Store
 coverage
-*.marko.js
+playwright-report
+test-results
 /.cache
-/test/mocha-headless/generated
-/test/mocha-headless/.cache
 .cache
 ~*

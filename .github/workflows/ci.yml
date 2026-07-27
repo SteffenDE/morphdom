@@ -8,12 +8,14 @@ on:
 
 jobs:
   npm_test:
-    name: npm test
+    name: npm test on Node.js ${{ matrix.node }}
 
     strategy:
       matrix:
-        include:
-          - node: 16.x
+        node:
+          - 20.x
+          - 22.x
+          - 24.x
 
     runs-on: ubuntu-latest
     steps:
@@ -24,16 +26,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
+          cache: npm
 
-      - name: Restore npm cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-${{ matrix.node }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ matrix.node }}-node-
+      - name: Install npm dependencies
+        run: npm ci
 
-      - name: npm install and test
-        run: |
-          npm install
-          npm test
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Test
+        run: npm test
