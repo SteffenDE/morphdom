@@ -299,6 +299,7 @@ var morphdom = (function() {
         return parent.appendChild(child);
       };
       var childrenOnly = options.childrenOnly === true;
+      var keyedRoot = options.keyedRoot === true;
       var fromNodesLookup = /* @__PURE__ */ Object.create(null);
       var keyedRemovalList = [];
       function addKeyedRemoval(key) {
@@ -512,6 +513,31 @@ var morphdom = (function() {
           specialElHandler(fromEl, toEl);
         }
       }
+      function cleanupKeyedNodes() {
+        for (var i = 0, len = keyedRemovalList.length; i < len; i++) {
+          var elToRemove = fromNodesLookup[keyedRemovalList[i]];
+          if (elToRemove) {
+            removeNode(elToRemove, elToRemove.parentNode, false);
+          }
+        }
+      }
+      if (keyedRoot && !childrenOnly) {
+        var fromNodeKey = getNodeKey(fromNode);
+        var toNodeKey = getNodeKey(toNode);
+        if ((fromNodeKey || toNodeKey) && fromNodeKey !== toNodeKey) {
+          if (toNode.actualize) {
+            toNode = toNode.actualize(fromNode.ownerDocument || doc);
+          }
+          onNodeDiscarded(fromNode);
+          if (fromNode.parentNode) {
+            fromNode.parentNode.replaceChild(toNode, fromNode);
+          }
+          handleNodeAdded(toNode);
+          walkDiscardedChildNodes(fromNode, false);
+          cleanupKeyedNodes();
+          return toNode;
+        }
+      }
       var morphedNode = fromNode;
       var morphedNodeType = morphedNode.nodeType;
       var toNodeType = toNode.nodeType;
@@ -543,14 +569,7 @@ var morphdom = (function() {
           return;
         }
         morphEl(morphedNode, toNode, childrenOnly);
-        if (keyedRemovalList) {
-          for (var i = 0, len = keyedRemovalList.length; i < len; i++) {
-            var elToRemove = fromNodesLookup[keyedRemovalList[i]];
-            if (elToRemove) {
-              removeNode(elToRemove, elToRemove.parentNode, false);
-            }
-          }
-        }
+        cleanupKeyedNodes();
       }
       if (!childrenOnly && morphedNode !== fromNode && fromNode.parentNode) {
         if (morphedNode.actualize) {
