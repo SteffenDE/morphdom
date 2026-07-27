@@ -3,7 +3,7 @@ morphdom
 
 ![Download count all time](https://img.shields.io/npm/dt/morphdom.svg)
 
-[![Build Status](https://travis-ci.org/patrick-steele-idem/morphdom.svg?branch=master)](https://travis-ci.org/patrick-steele-idem/morphdom)
+[![CI](https://github.com/patrick-steele-idem/morphdom/actions/workflows/ci.yml/badge.svg)](https://github.com/patrick-steele-idem/morphdom/actions/workflows/ci.yml)
 
 [![NPM](https://nodei.co/npm/morphdom.png)](https://www.npmjs.com/package/morphdom)
 
@@ -26,7 +26,9 @@ npm install morphdom --save
 ```
 
 _NOTE: Published npm packages:_
+  - `dist/morphdom.js`
   - `dist/morphdom-umd.js`
+  - `dist/morphdom-umd.min.js`
   - `dist/morphdom-esm.js`
 
 The code below shows how to morph one `<div>` element to another `<div>` element.
@@ -228,25 +230,7 @@ _NOTE: If you are using a `morphdom` in your project please send a PR to add you
 
 # Benchmarks
 
-Below are the results on running benchmarks on various DOM transformations for both `morphdom`, [`nanomorph`](https://github.com/choojs/nanomorph) and [virtual-dom](https://github.com/Matt-Esch/virtual-dom). This benchmark uses a high performance timer (i.e., `window.performance.now()`) if available. For each test the benchmark runner will run `100` iterations. After all of the iterations are completed for one test the average time per iteration is calculated by dividing the total time by the number of iterations.
-
-To run the benchmarks:
-
-```
-npm run benchmark
-```
-
-And then open the generated `test-page.html` in the browser to view the results:
-
-```
-file:///HOME/path-to-morphdom/test/mocha-headless/generated/test-page.html
-```
-
-The table below shows some sample benchmark results when running the benchmarks on a MacBook Pro (2.3 GHz Intel Core i5, 8 GB 2133 MHz LPDDR3). Remember, as noted above, the larger the diff needed to evaluate, the more vdom will perform better. The average time per iteration for each test is shown in the table below:
-
-<div class="results"> <ul> <li> Total time for morphdom: 820.02ms </li> <li> Total time for virtual-dom: 333.81ms (winner) </li> <li> Total time for nanomorph: 3,177.85ms </li> </ul> <table> <thead> <tr> <td></td> <td> morphdom </td> <td> nanomorph </td> <td> virtual-dom </td> </tr> </thead> <tbody> <tr> <td class="test-name"> attr-value-empty-string </td> <td> <b> 0.01ms </b> </td> <td> 0.02ms </td> <td> <b> 0.01ms</b> </td> </tr> <tr> <td class="test-name"> change-tagname </td> <td> 0.01ms </td> <td> <b> 0.00ms</b> </td> <td> 0.01ms </td> </tr> <tr> <td class="test-name"> change-tagname-ids </td> <td> 0.02ms </td> <td> <b> 0.00ms</b> </td> <td> 0.02ms </td> </tr> <tr> <td class="test-name"> data-table </td> <td> <b> 0.60ms</b> </td> <td> 1.38ms </td> <td> 0.80ms </td> </tr> <tr> <td class="test-name"> data-table2 </td> <td> 2.72ms </td> <td> 12.42ms </td> <td> <b> 0.84ms</b> </td> </tr> <tr> <td class="test-name"> equal </td> <td> 0.50ms </td> <td> 1.33ms </td> <td> <b> 0.02ms</b> </td> </tr> <tr> <td class="test-name"> id-change-tag-name </td> <td> <b> 0.03ms</b> </td> <td> 0.04ms </td> <td> 0.04ms </td> </tr> <tr> <td class="test-name"> ids-nested </td> <td> 0.08ms </td> <td> 0.02ms </td> <td> <b> 0.01ms</b> </td> </tr> <tr> <td class="test-name"> ids-nested-2 </td> <td> 0.03ms </td> <td> <b> 0.02ms</b> </td> <td> 0.05ms </td> </tr> <tr> <td class="test-name"> ids-nested-3 </td> <td> 0.03ms </td> <td> <b> 0.01ms</b> </td> <td> 0.02ms </td> </tr> <tr> <td class="test-name"> ids-nested-4 </td> <td> 0.04ms </td> <td> 0.04ms </td> <td> <b> 0.03ms</b> </td> </tr> <tr> <td class="test-name"> ids-nested-5 </td> <td> <b> 0.04ms</b> </td> <td> 0.08ms </td> <td> 0.06ms </td> </tr> <tr> <td class="test-name"> ids-nested-6 </td> <td> <b> 0.03ms</b> </td> <td> 0.03ms </td> <td> 0.03ms </td> </tr> <tr> <td class="test-name"> ids-nested-7 </td> <td> <b> 0.02ms</b> </td> <td> 0.03ms </td> <td> 0.02ms </td> </tr> <tr> <td class="test-name"> ids-prepend </td> <td> 0.03ms </td> <td> 0.03ms </td> <td> <b> 0.02ms</b> </td> </tr> <tr> <td class="test-name"> input-element </td> <td> 0.02ms </td> <td> 0.04ms </td> <td> <b> 0.00ms</b> </td> </tr> <tr> <td class="test-name"> input-element-disabled </td> <td> <b> 0.01ms</b> </td> <td> 0.02ms </td> <td> <b> 0.01ms </b> </td> </tr> <tr> <td class="test-name"> input-element-enabled </td> <td> <b> 0.01ms </b> </td> <td> 0.02ms </td> <td> <b> 0.01ms</b> </td> </tr> <tr> <td class="test-name"> large </td> <td> 2.88ms </td> <td> 12.11ms </td> <td> <b> 0.35ms</b> </td> </tr> <tr> <td class="test-name"> lengthen </td> <td> <b> 0.03ms</b> </td> <td> 0.15ms </td> <td> 0.04ms </td> </tr> <tr> <td class="test-name"> one </td> <td> <b> 0.01ms</b> </td> <td> 0.03ms </td> <td> 0.01ms </td> </tr> <tr> <td class="test-name"> reverse </td> <td> 0.03ms </td> <td> 0.05ms </td> <td> <b> 0.02ms</b> </td> </tr> <tr> <td class="test-name"> reverse-ids </td> <td> 0.05ms </td> <td> 0.07ms </td> <td> <b> 0.02ms</b> </td> </tr> <tr> <td class="test-name"> select-element </td> <td> 0.07ms </td> <td> 0.14ms </td> <td> <b> 0.03ms</b> </td> </tr> <tr> <td class="test-name"> shorten </td> <td> 0.03ms </td> <td> 0.07ms </td> <td> <b> 0.02ms</b> </td> </tr> <tr> <td class="test-name"> simple </td> <td> <b> 0.02ms </b> </td> <td> 0.05ms </td> <td> <b> 0.02ms</b> </td> </tr> <tr> <td class="test-name"> simple-ids </td> <td> 0.05ms </td> <td> 0.09ms </td> <td> <b> 0.04ms</b> </td> </tr> <tr> <td class="test-name"> simple-text-el </td> <td> <b> 0.03ms</b> </td> <td> 0.04ms </td> <td> <b> 0.03ms </b> </td> </tr> <tr> <td class="test-name"> svg </td> <td> 0.03ms </td> <td> 0.05ms </td> <td> <b> 0.01ms</b> </td> </tr> <tr> <td class="test-name"> svg-append </td> <td> <b> 0.06ms</b> </td> <td> 0.06ms </td> <td> 0.07ms </td> </tr> <tr> <td class="test-name"> svg-append-new </td> <td> <b> 0.02ms </b> </td> <td> <b> 0.02ms</b> </td> <td> 0.18ms </td> </tr> <tr> <td class="test-name"> svg-no-default-namespace </td> <td> 0.05ms </td> <td> 0.09ms </td> <td> <b> 0.04ms</b> </td> </tr> <tr> <td class="test-name"> svg-xlink </td> <td> 0.01ms </td> <td> 0.05ms </td> <td> <b> 0.00ms</b> </td> </tr> <tr> <td class="test-name"> tag-to-text </td> <td> <b> 0.00ms </b> </td> <td> <b> 0.00ms</b> </td> <td> 0.01ms </td> </tr> <tr> <td class="test-name"> text-to-tag </td> <td> <b> 0.00ms </b> </td> <td> <b> 0.00ms</b> </td> <td> 0.01ms </td> </tr> <tr> <td class="test-name"> text-to-text </td> <td> <b> 0.00ms</b> </td> <td> 0.01ms </td> <td> 0.00ms </td> </tr> <tr> <td class="test-name"> textarea </td> <td> <b> 0.01ms</b> </td> <td> 0.02ms </td> <td> 0.01ms </td> </tr> <tr> <td class="test-name"> todomvc </td> <td> 0.55ms </td> <td> 3.05ms </td> <td> <b> 0.32ms</b> </td> </tr> <tr> <td class="test-name"> todomvc2 </td> <td> <b> 0.05ms</b> </td> <td> 0.07ms </td> <td> 0.09ms </td> </tr> <tr> <td class="test-name"> two </td> <td> <b> 0.01ms </b> </td> <td> 0.02ms </td> <td> <b> 0.01ms</b> </td> </tr> </tbody> </table></div>
-
-_NOTE: Chrome 72.0.3626.121_
+Historical benchmark output is kept in [docs/old-benchmark.md](./docs/old-benchmark.md). The old benchmark runner depended on Marko, Lasso, Mocha Chrome, nanomorph, and virtual-dom, so it has been removed from the active development toolchain.
 
 # Maintainers
 

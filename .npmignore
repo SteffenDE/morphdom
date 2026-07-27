@@ -1,4 +1,6 @@
 /test
+/scripts
+/playwright.config.js
 .*
 /node_modules
 /work
@@ -10,7 +12,6 @@
 *.orig
 .DS_Store
 coverage
-*.marko.js
 /.cache
 /examples
 ~*
