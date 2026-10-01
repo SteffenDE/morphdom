@@ -1764,6 +1764,50 @@ describe('morphdom' , function() {
        expect(noUpdateParentBefore.isSameNode(noUpdateBefore.parentNode)).to.equal(false);
      });
 
+     it('should morph the element returned from onBeforeElUpdated instead of the original', function() {
+         var container = document.createElement('div');
+         container.innerHTML = '<div id="locked"><span>old</span></div>';
+         var lockedEl = container.firstChild;
+         var clone;
+
+         morphdom(container, '<div><div id="locked"><span>new</span></div></div>', {
+             onBeforeElUpdated: function(fromEl, toEl) {
+                 if (fromEl.id === 'locked') {
+                     clone = fromEl.cloneNode(true);
+                     return clone;
+                 }
+                 return true;
+             }
+         });
+
+         expect(container.firstChild).to.equal(lockedEl);
+         expect(lockedEl.innerHTML).to.equal('<span>old</span>');
+         expect(clone.innerHTML).to.equal('<span>new</span>');
+     });
+
+     // https://github.com/phoenixframework/phoenix_live_view/issues/4456
+     it('should morph the SVG element returned from onBeforeElUpdated instead of the original', function() {
+         var container = document.createElement('div');
+         container.innerHTML = '<svg id="locked"><text>old</text></svg>';
+         var lockedEl = container.firstChild;
+         var clone;
+
+         morphdom(container, '<div><svg id="locked"><text>new</text></svg></div>', {
+             onBeforeElUpdated: function(fromEl, toEl) {
+                 if (fromEl.id === 'locked') {
+                     clone = fromEl.cloneNode(true);
+                     return clone;
+                 }
+                 return true;
+             }
+         });
+
+         expect(lockedEl instanceof SVGElement).to.equal(true);
+         expect(container.firstChild).to.equal(lockedEl);
+         expect(lockedEl.textContent).to.equal('old');
+         expect(clone.textContent).to.equal('new');
+     });
+
      xit('should reuse DOM element with matching ID and class name (2)', function() {
          // NOTE: This test is currently failing. We need to improve the special case code
          //       for handling incompatible root nodes.

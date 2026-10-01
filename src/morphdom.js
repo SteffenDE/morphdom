@@ -220,7 +220,7 @@ export default function morphdomFactory(morphAttrs) {
         var beforeUpdateResult = onBeforeElUpdated(fromEl, toEl);
         if (beforeUpdateResult === false) {
           return;
-        } else if (beforeUpdateResult instanceof HTMLElement) {
+        } else if (beforeUpdateResult instanceof Element) {
           fromEl = beforeUpdateResult;
           // reindex the new fromEl in case it's not in the same
           // tree as the original fromEl
