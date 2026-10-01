@@ -298,7 +298,7 @@ function morphdomFactory(morphAttrs) {
         var beforeUpdateResult = onBeforeElUpdated(fromEl, toEl);
         if (beforeUpdateResult === false) {
           return;
-        } else if (beforeUpdateResult instanceof HTMLElement) {
+        } else if (beforeUpdateResult instanceof Element) {
           fromEl = beforeUpdateResult;
           indexTree(fromEl);
         }
